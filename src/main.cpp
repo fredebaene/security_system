@@ -35,11 +35,11 @@ void loop() {
   // - '2': setting new code
   // - '3': entering code
   if (programMode == '1') {
-    programMode = '0';
     Serial.println("Select what you want to do:");
     Serial.println("- 1 : reprint main menu");
     Serial.println("- 2 : select new code");
     Serial.println("- 3 : enter code");
+    programMode = '0';
   }
   
   // Obtain any key presses. If the user does not press any key, wait until a 
