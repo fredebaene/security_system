@@ -49,10 +49,10 @@ void loop() {
   if (pressedKey == '1') {
     programMode = '1';
   } else if (pressedKey == '2') {
-    Serial.println ("### Set new code ###");
+    Serial.println ("# Set new code #####");
     programMode = '1';
   } else if (pressedKey == '3') {
-    Serial.println("### Enter code ###");
+    Serial.println("# Enter code ########");
     programMode = '1';
   }
 
