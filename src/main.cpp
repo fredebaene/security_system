@@ -1,104 +1,66 @@
 #include <Arduino.h>
-#include <Keypad.h>
+#include <LiquidCrystal.h>
 
+/*
+/ 
+/ A breaksdown of the pins:
+/ 
+/ - VDD (positive power supply connection)                         -> VDD (5V)
+/ - VSS (GND connection)                                           -> VSS (GND)
+/ - A (anode; positive power supply connection for LED backlight)  -> A (5V)
+/ - K (kathode; ground connection for the LED backlight)           -> K (GND)
+/ - RW (read/write)
+/ - RS (register select)
+/ - EN (enable)
+/ - D0-D1 (data pins or data lines).
+/ 
+/ The VDD and VSS pins relate to the power supply for the logic and internal 
+/ circuitry of the LCD, and not specifically the backlight. The A and K pins 
+/ relate to the power supply of the LED backlight. Applying a voltage over the 
+/ A and K pins supplies power to the LED backlight.
+/ 
+/ The RW pin sets the mode for the LCD. When set to read (R) mode, then the 
+/ microcontroller can read data from the LCD. This is not very common in 
+/ typical applications. More common is the write (W) mode, in which the 
+/ microcontroller writes data to the LCD.
+/ 
+/ The RS pin determines if the data sent by the microcontroller to the LCD 
+/ modules must be treated as a command or as characters to be displayed. If  
+/ set to LOW (0), then the data sent to the LCD module is treated as a 
+/ command, controlling the behavior of the LCD. If set to HIGH (1), then the 
+/ data sent to the LCD is treated as characters to be displayed.
+/ 
+/ The E pin enables the LCD command to read data from the data pins. If the 
+/ state of the pin goes from HIGH to LOW, then the LCD modules reads the data 
+/ from the data lines (data pins), whether it is data or characters to be 
+/ displayed.
+/ 
+*/
 
-// Map the buttons to an array for the Keymap instance
-const byte ROWS = 4;
-const byte COLS = 4;
+int RS = 7;
+int EN = 8;
+int D4 = 9;
+int D5 = 10;
+int D6 = 11;
+int D7 = 12;
 
-char keyChars[ROWS][COLS] = {
-  {'1', '2', '3', 'A'},
-  {'4', '5', '6', 'B'},
-  {'7', '8', '9', 'C'},
-  {'*', '0', '#', 'D'}
-};
+LiquidCrystal lcd(RS, EN, D4, D5, D6, D7);
 
-byte rowPins[ROWS] = {9, 8, 7, 6}; // Pins used for the rows of the keypad
-byte colPins[COLS] = {5, 4, 3, 2}; // Pins used for the columns of the keypad
-
-// Initialize a Keypad instance
-Keypad keypad = Keypad(makeKeymap(keyChars), rowPins, colPins, ROWS, COLS);
-
-// Initialize variables to work with program
-char programMode = '1';
-const byte CODE_LENGTH = 5;
-byte currentCodeLength;
-String userCode = "";
-String enteredCode = "";
+const int screenTime = 2000;
 
 void setup() {
-  Serial.begin(9600);
-}
 
+    lcd.begin(16, 2); // initialize an interface to the LCD (16 cols; 2 rows)
+
+}
 
 void loop() {
 
-  // The following program modes are available:
-  // - '0': waiting
-  // - '1': main menu
-  // - '2': setting new code
-  // - '3': entering code
-  if (programMode == '1') {
-    Serial.println("Select what you want to do:");
-    Serial.println("- 1 : show main menu");
-    Serial.println("- 2 : set new code");
-    Serial.println("- 3 : enter code");
-    programMode = '0';
-  }
-  
-  // Obtain any key presses. If the user does not press any key, wait until a 
-  // key is pressed.
-  char pressedKey = keypad.getKey();
-
-  if (pressedKey == '1') {
-
-    programMode = '1';
-
-  } else if (pressedKey == '2') {
-
-    Serial.println ("# Set new code");
-    currentCodeLength = 0;
-    userCode = "";
-    while (currentCodeLength < CODE_LENGTH) {
-      pressedKey = keypad.getKey();
-      if (pressedKey) {
-        Serial.println(pressedKey);
-        userCode += pressedKey;
-        currentCodeLength += 1;
-      }
-    }
-    Serial.println(userCode);
-    programMode = '1';
-
-  } else if (pressedKey == '3') {
-
-    Serial.println("# Enter code");
-    currentCodeLength = 0;
-    enteredCode = "";
-
-    // Obtain the user code from the user. Do not print out the pressed keys 
-    // for security reasons.
-    while (currentCodeLength < CODE_LENGTH) {
-
-      pressedKey = keypad.getKey();
-      if (pressedKey) {
-        Serial.print('*');
-        enteredCode += pressedKey;
-        currentCodeLength += 1;
-      }
-
-    }
-    Serial.println("");
-
-    // Evaluate the entered code and warn the user of the outcome.
-    if (enteredCode == userCode) {
-      Serial.println("Congrats! You entered the correct code!");
-    } else {
-      Serial.println("Error: you entered an incorrect code!");
-    }
-
-    programMode = '1';
-
-  }
+    lcd.clear();
+    lcd.print("Hello World!");
+    delay(screenTime);
+    lcd.clear();
+    lcd.print("My name is Fre");
+    delay(screenTime);
 
 }
