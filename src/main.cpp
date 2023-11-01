@@ -6,7 +6,7 @@
 / A breaksdown of the pins:
 / 
 / - VDD (positive power supply connection)                         -> VDD (5V)
-/ - VSS (GND connection)                                           -> VSS (GND)
+/ - VSS (ground connection)                                        -> VSS (GND)
 / - A (anode; positive power supply connection for LED backlight)  -> A (5V)
 / - K (kathode; ground connection for the LED backlight)           -> K (GND)
 / - RW (read/write)
@@ -30,9 +30,9 @@
 / command, controlling the behavior of the LCD. If set to HIGH (1), then the 
 / data sent to the LCD is treated as characters to be displayed.
 / 
-/ The E pin enables the LCD command to read data from the data pins. If the 
+/ The E pin enables the LCD module to read data from the data pins. If the 
 / state of the pin goes from HIGH to LOW, then the LCD modules reads the data 
-/ from the data lines (data pins), whether it is data or characters to be 
+/ from the data lines (data pins), whether it is a command or characters to be 
 / displayed.
 / 
 */
@@ -46,7 +46,7 @@ int D7 = 12;
 
 LiquidCrystal lcd(RS, EN, D4, D5, D6, D7);
 
-const int screenTime = 2000;
+const int SCREEN_TIME = 2000;
 
 void setup() {
 
@@ -58,9 +58,9 @@ void loop() {
 
     lcd.clear();
     lcd.print("Hello World!");
-    delay(screenTime);
+    delay(SCREEN_TIME);
     lcd.clear();
     lcd.print("My name is Fre");
-    delay(screenTime);
+    delay(SCREEN_TIME);
 
 }
